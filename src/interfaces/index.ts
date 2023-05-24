@@ -1,13 +1,18 @@
 export interface ITaskRequest {
   title: string;
   description: string;
-  createdAt: string;
-  user?: IUserResponse;
 }
+
+export interface ITaskResponse {
+  title: string;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface ITaskUpdate {
   title?: string;
   description?: string;
-  createdAt?: string;
   isDone?: boolean;
 }
 
@@ -21,10 +26,12 @@ export interface IUserResponse {
   username: string;
   email: string;
   password: string;
+  tasks: ITaskResponse[];
 }
 
 export interface IUserUpdate {
   username?: string;
   email?: string;
   password?: string;
+  tasks?: ITaskResponse[];
 }
