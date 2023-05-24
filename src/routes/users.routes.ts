@@ -1,11 +1,14 @@
 import { Router } from "express";
 import { usersController } from "../controllers/users.controllers";
+import { userMiddlewares } from "../middlewares/users.middlewares";
 
-export const userRoutes = Router();
+const userRoutes = Router();
 
-userRoutes.post("", (req, res) => {
-  usersController.userCreate(req, res);
-});
+userRoutes.post(
+  "",
+  userMiddlewares.ensureUserNotExists,
+  usersController.userCreate
+);
 
 userRoutes.get("", (req, res) => {
   usersController.listAllUsers(req, res);
@@ -22,3 +25,5 @@ userRoutes.patch("/:id", (req, res) => {
 userRoutes.delete("/:id", (req, res) => {
   usersController.deleteUser(req, res);
 });
+
+export { userRoutes };
