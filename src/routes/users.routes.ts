@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { usersController } from "../controllers/users.controllers";
 
-const userRoutes = Router();
+export const userRoutes = Router();
 
 userRoutes.post("", (req, res) => {
   usersController.userCreate(req, res);
@@ -22,5 +22,3 @@ userRoutes.patch("/:id", (req, res) => {
 userRoutes.delete("/:id", (req, res) => {
   usersController.deleteUser(req, res);
 });
-
-export { userRoutes };
