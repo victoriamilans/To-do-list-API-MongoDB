@@ -14,7 +14,11 @@ class UsersController {
     return res.status(201).json(newUser);
   }
 
-  async listAllUsers(req: Request, res: Response) {}
+  async listAllUsers(req: Request, res: Response) {
+    const allUsers = await usersService.listAllUsers();
+
+    return res.json(allUsers);
+  }
 
   async listOneUser(req: Request, res: Response) {}
 

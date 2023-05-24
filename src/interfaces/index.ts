@@ -26,6 +26,10 @@ export interface IUserResponse {
   username: string;
   email: string;
   password: string;
+  _id: string;
+  __v: number;
+  createdAt: string;
+  updatedAt: string;
   tasks: ITaskResponse[];
 }
 

@@ -1,29 +1,23 @@
 import { Router } from "express";
 import { usersController } from "../controllers/users.controllers";
 import { userMiddlewares } from "../middlewares/users.middlewares";
+import { userSerializer } from "../serializers/user.serializers";
 
 const userRoutes = Router();
 
 userRoutes.post(
   "",
   userMiddlewares.ensureUserNotExists,
+  userMiddlewares.ensureDataIsValid(userSerializer),
   usersController.userCreate
 );
 
-userRoutes.get("", (req, res) => {
-  usersController.listAllUsers(req, res);
-});
+userRoutes.get("", usersController.listAllUsers);
 
-userRoutes.get("/:id", (req, res) => {
-  usersController.listOneUser(req, res);
-});
+userRoutes.get("/:id", usersController.listOneUser);
 
-userRoutes.patch("/:id", (req, res) => {
-  usersController.userUpdate(req, res);
-});
+userRoutes.patch("/:id", usersController.userUpdate);
 
-userRoutes.delete("/:id", (req, res) => {
-  usersController.deleteUser(req, res);
-});
+userRoutes.delete("/:id", usersController.deleteUser);
 
 export { userRoutes };
