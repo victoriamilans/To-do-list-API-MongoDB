@@ -16,7 +16,11 @@ userRoutes.get("", usersController.listAllUsers);
 
 userRoutes.get("/:id", usersController.listOneUser);
 
-userRoutes.patch("/:id", usersController.userUpdate);
+userRoutes.patch(
+  "/:id",
+  userMiddlewares.ensureUserNotExists,
+  usersController.userUpdate
+);
 
 userRoutes.delete("/:id", usersController.deleteUser);
 

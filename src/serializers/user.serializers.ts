@@ -1,6 +1,4 @@
 import * as yup from "yup";
-import { Schema } from "yup";
-import { IUserRequest } from "../interfaces";
 
 export const userSerializer = yup.object().shape({
   username: yup.string().required("Username is required"),

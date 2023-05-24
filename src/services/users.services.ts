@@ -1,4 +1,5 @@
 import { User } from "../entities/user.entitie";
+import { AppError } from "../errors";
 import { IUserRequest, IUserUpdate } from "../interfaces";
 import {
   userResponseArraySerializer,
@@ -15,7 +16,14 @@ class UsersService {
     return userWithoutPassword;
   }
 
-  async listOneUser(id: string) {}
+  async listOneUser(id: string) {
+    const user = await User.findById({ _id: id }).lean();
+    const userWithoutPassword = await userResponseSerializer.validate(user, {
+      stripUnknown: true,
+    });
+
+    return userWithoutPassword;
+  }
 
   async listAllUsers() {
     const users = await User.find({}).lean();
@@ -29,9 +37,23 @@ class UsersService {
     return userWithoutPassword;
   }
 
-  async updateUser(id: string, data: IUserUpdate) {}
+  async updateUser(id: string, data: IUserUpdate) {
+    await User.updateOne({ _id: id, ...data });
+    const updatedUser = await User.findById({ _id: id });
 
-  async deleteUser(id: string) {}
+    const userWithoutPassword = await userResponseSerializer.validate(
+      updatedUser,
+      {
+        stripUnknown: true,
+      }
+    );
+
+    return userWithoutPassword;
+  }
+
+  async deleteUser(id: string) {
+    const userToDelete = await User.findByIdAndDelete({ _id: id });
+  }
 }
 
 export const usersService = new UsersService();

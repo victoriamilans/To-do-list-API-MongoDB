@@ -20,11 +20,28 @@ class UsersController {
     return res.json(allUsers);
   }
 
-  async listOneUser(req: Request, res: Response) {}
+  async listOneUser(req: Request, res: Response) {
+    const searchedUser = req.params.id; //trocar para user.id após concluir autenticação
+    const user = await usersService.listOneUser(searchedUser);
 
-  async userUpdate(req: Request, res: Response) {}
+    return res.json(user);
+  }
 
-  async deleteUser(req: Request, res: Response) {}
+  async userUpdate(req: Request, res: Response) {
+    const userToUpdate: string = req.params.id; //trocar para user.id após concluir autenticação
+    const userData = req.body;
+
+    const updatedUser = await usersService.updateUser(userToUpdate, userData);
+
+    return res.json(updatedUser);
+  }
+
+  async deleteUser(req: Request, res: Response) {
+    const userToDelete: string = req.params.id; //trocar para user.id após concluir autenticação
+    const deletedUser = await usersService.deleteUser(userToDelete);
+
+    return res.sendStatus(204);
+  }
 }
 
 export const usersController = new UsersController();

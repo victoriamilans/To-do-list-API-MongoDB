@@ -25,9 +25,9 @@ export interface IUserRequest {
 export interface IUserResponse {
   username: string;
   email: string;
-  password: string;
+  password?: string;
   _id: string;
-  __v: number;
+  __v?: number;
   createdAt: string;
   updatedAt: string;
   tasks: ITaskResponse[];
