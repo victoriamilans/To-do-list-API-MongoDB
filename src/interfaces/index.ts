@@ -39,3 +39,8 @@ export interface IUserUpdate {
   password?: string;
   tasks?: ITaskResponse[];
 }
+
+export interface IUserLogin {
+  email: string;
+  password: string;
+}

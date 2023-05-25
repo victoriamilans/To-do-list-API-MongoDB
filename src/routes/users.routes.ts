@@ -3,7 +3,7 @@ import { usersController } from "../controllers/users.controllers";
 import { userMiddlewares } from "../middlewares/users.middlewares";
 import { userSerializer } from "../serializers/user.serializers";
 
-const userRoutes = Router();
+export const userRoutes = Router();
 
 userRoutes.post(
   "",
@@ -23,5 +23,3 @@ userRoutes.patch(
 );
 
 userRoutes.delete("/:id", usersController.deleteUser);
-
-export { userRoutes };

@@ -20,3 +20,12 @@ export const userResponseSerializer = yup.object().shape({
 });
 
 export const userResponseArraySerializer = yup.array(userResponseSerializer);
+
+export const userLoginSerializer = yup.object().shape({
+  email: yup.string().required("Email is required"),
+  password: yup
+    .string()
+    .required("Password is required")
+    .min(6, "Enter at least 6 digits")
+    .max(12, "Enter a maximum of 12 digits"),
+});
