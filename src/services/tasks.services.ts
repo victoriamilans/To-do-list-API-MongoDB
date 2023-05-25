@@ -1,7 +1,7 @@
 import { ITaskRequest, ITaskUpdate } from "../interfaces";
 
 class TasksService {
-  async createTask({ title, description, createdAt }: ITaskRequest) {}
+  async createTask({ title, description }: ITaskRequest) {}
 
   async listOneTask(id: string) {}
 

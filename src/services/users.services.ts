@@ -1,5 +1,4 @@
 import { User } from "../entities/user.entitie";
-import { AppError } from "../errors";
 import { IUserRequest, IUserUpdate } from "../interfaces";
 import {
   userResponseArraySerializer,
