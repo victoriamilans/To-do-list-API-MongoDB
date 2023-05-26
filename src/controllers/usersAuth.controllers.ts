@@ -1,12 +1,16 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { userAuthService } from "../services/userAuth.services";
 
 class UserAuthController {
-  async userLoginController(req: Request, res: Response) {
-    const { email, password } = req.body;
-    const userAuth = await userAuthService.userLogin(email, password);
+  async userLoginController(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { email, password } = req.body;
+      const userAuth = await userAuthService.userLogin(email, password);
 
-    return res.json(userAuth);
+      return res.json(userAuth);
+    } catch (error) {
+      next(error);
+    }
   }
 }
 

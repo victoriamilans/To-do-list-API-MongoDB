@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { User } from "../entities/user.entitie";
-import { AppError } from "../errors";
 import { AnySchema } from "yup";
+import { AppError } from "../errors";
 
 class UserMiddlewares {
   async ensureUserNotExists(req: Request, res: Response, next: NextFunction) {
