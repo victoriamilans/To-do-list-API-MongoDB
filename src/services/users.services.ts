@@ -22,11 +22,14 @@ class UsersService {
 
   async listOneUser(id: string): Promise<any> {
     const user = await User.findById({ _id: id }).lean();
+
     const userWithoutPassword = await userResponseSerializer.validate(user, {
       stripUnknown: true,
     });
 
-    return userWithoutPassword;
+    const tasks = await Task.find({ user: id }, { __v: 0, user: 0 }).lean();
+
+    return { ...userWithoutPassword, tasks };
   }
 
   async listAllUsers(): Promise<any> {
