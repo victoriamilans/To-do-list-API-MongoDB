@@ -1,12 +1,17 @@
+import { Task } from "../entities/tasks.entitie";
 import { User } from "../entities/user.entitie";
-import { IUserRequest, IUserUpdate } from "../interfaces";
+import { IUserRequest, IUserResponse, IUserUpdate } from "../interfaces";
 import {
   userResponseArraySerializer,
   userResponseSerializer,
 } from "../serializers/user.serializers";
 
 class UsersService {
-  async createUser({ username, email, password }: IUserRequest) {
+  async createUser({
+    username,
+    email,
+    password,
+  }: IUserRequest): Promise<Omit<IUserResponse, typeof password>> {
     const user = await User.create({ username, email, password });
     const userWithoutPassword = await userResponseSerializer.validate(user, {
       stripUnknown: true,
@@ -15,7 +20,7 @@ class UsersService {
     return userWithoutPassword;
   }
 
-  async listOneUser(id: string) {
+  async listOneUser(id: string): Promise<any> {
     const user = await User.findById({ _id: id }).lean();
     const userWithoutPassword = await userResponseSerializer.validate(user, {
       stripUnknown: true,
@@ -24,8 +29,9 @@ class UsersService {
     return userWithoutPassword;
   }
 
-  async listAllUsers() {
+  async listAllUsers(): Promise<any> {
     const users = await User.find({}).lean();
+
     const userWithoutPassword = await userResponseArraySerializer.validate(
       users,
       {
@@ -33,10 +39,20 @@ class UsersService {
       }
     );
 
-    return userWithoutPassword;
+    const usersWithTasks = await Promise.all(
+      userWithoutPassword.map(async (user: any) => {
+        const tasks = await Task.find(
+          { user: user._id },
+          { __v: 0, user: 0 }
+        ).lean();
+        return { ...user, tasks };
+      })
+    );
+
+    return usersWithTasks;
   }
 
-  async updateUser(id: string, data: IUserUpdate) {
+  async updateUser(id: string, data: IUserUpdate): Promise<IUserUpdate> {
     const updateData = { ...data };
     await User.updateOne({ _id: id }, { $set: updateData });
     const updatedUser = await User.findById({ _id: id });
@@ -51,7 +67,7 @@ class UsersService {
     return userWithoutPassword;
   }
 
-  async deleteUser(id: string) {
+  async deleteUser(id: string): Promise<void> {
     const userToDelete = await User.findByIdAndDelete({ _id: id });
   }
 }

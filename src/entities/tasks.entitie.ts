@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { UserSchema } from "./user.entitie";
 
 export const TaskSchema = new mongoose.Schema(
   {
@@ -15,6 +16,11 @@ export const TaskSchema = new mongoose.Schema(
     isDone: {
       type: Boolean,
       default: false,
+    },
+
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
   },
   { timestamps: true }

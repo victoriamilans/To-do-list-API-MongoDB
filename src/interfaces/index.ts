@@ -8,6 +8,8 @@ export interface ITaskResponse {
   description: string;
   createdAt: string;
   updatedAt: string;
+  _id: string;
+  isDone: boolean;
 }
 
 export interface ITaskUpdate {

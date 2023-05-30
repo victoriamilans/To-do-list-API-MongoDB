@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import { hash } from "bcryptjs";
-import { TaskSchema } from "./tasks.entitie";
 
 export const UserSchema = new mongoose.Schema(
   {
@@ -21,9 +20,12 @@ export const UserSchema = new mongoose.Schema(
       required: true,
     },
 
-    tasks: {
-      type: [TaskSchema],
-    },
+    tasks: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Task",
+      },
+    ],
   },
   { timestamps: true }
 );

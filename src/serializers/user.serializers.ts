@@ -1,11 +1,10 @@
 import * as yup from "yup";
+import { IUserLogin, IUserRequest, IUserUpdate } from "../interfaces";
 import {
-  IUserLogin,
-  IUserRequest,
-  IUserResponse,
-  IUserResponseArray,
-  IUserUpdate,
-} from "../interfaces";
+  taskRequestSerializer,
+  taskResponseArraySerializer,
+  taskResponseSerializer,
+} from "./tasks.serializers";
 
 export const userSerializer: yup.ObjectSchema<IUserRequest> = yup
   .object()
@@ -19,13 +18,13 @@ export const userSerializer: yup.ObjectSchema<IUserRequest> = yup
       .max(12, "Enter a maximum of 12 digits"),
   });
 
-export const userResponseSerializer: yup.ObjectSchema<IUserResponse> = yup
+export const userResponseSerializer: yup.ObjectSchema<any> = yup
   .object()
   .shape({
+    tasks: taskResponseArraySerializer,
     _id: yup.string().notRequired(),
     updatedAt: yup.string().notRequired(),
     createdAt: yup.string().notRequired(),
-    tasks: yup.array().notRequired(),
     email: yup.string().email().notRequired(),
     username: yup.string().notRequired(),
   });
