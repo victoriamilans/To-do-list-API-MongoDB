@@ -29,3 +29,13 @@ export const userLoginSerializer = yup.object().shape({
     .min(6, "Enter at least 6 digits")
     .max(12, "Enter a maximum of 12 digits"),
 });
+
+export const userUpdateSerializer = yup.object().shape({
+  username: yup.string().notRequired(),
+  email: yup.string().email().notRequired(),
+  password: yup
+    .string()
+    .notRequired()
+    .min(6, "Enter at least 6 digits")
+    .max(12, "Enter a maximum of 12 digits"),
+});

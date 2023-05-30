@@ -1,7 +1,10 @@
 import { Router } from "express";
 import { usersController } from "../controllers/users.controllers";
 import { userMiddlewares } from "../middlewares/users.middlewares";
-import { userSerializer } from "../serializers/user.serializers";
+import {
+  userSerializer,
+  userUpdateSerializer,
+} from "../serializers/user.serializers";
 
 export const userRoutes = Router();
 
@@ -17,9 +20,11 @@ userRoutes.get("", usersController.listAllUsers);
 userRoutes.get("/:id", usersController.listOneUser);
 
 userRoutes.patch(
-  "/:id",
+  "",
+  userMiddlewares.ensureAuth,
   userMiddlewares.ensureUserNotExists,
+  userMiddlewares.ensureDataIsValid(userUpdateSerializer),
   usersController.userUpdate
 );
 
-userRoutes.delete("/:id", usersController.deleteUser);
+userRoutes.delete("", userMiddlewares.ensureAuth, usersController.deleteUser);

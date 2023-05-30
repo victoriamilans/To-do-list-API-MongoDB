@@ -21,14 +21,14 @@ class UsersController {
   }
 
   async listOneUser(req: Request, res: Response) {
-    const searchedUser = req.params.id; //trocar para user.id após concluir autenticação
+    const searchedUser = req.params.id;
     const user = await usersService.listOneUser(searchedUser);
 
     return res.json(user);
   }
 
   async userUpdate(req: Request, res: Response) {
-    const userToUpdate: string = req.params.id; //trocar para user.id após concluir autenticação
+    const userToUpdate: string = req.user.id;
     const userData = req.body;
 
     const updatedUser = await usersService.updateUser(userToUpdate, userData);
@@ -37,7 +37,7 @@ class UsersController {
   }
 
   async deleteUser(req: Request, res: Response) {
-    const userToDelete: string = req.params.id; //trocar para user.id após concluir autenticação
+    const userToDelete: string = req.user.id;
     const deletedUser = await usersService.deleteUser(userToDelete);
 
     return res.sendStatus(204);

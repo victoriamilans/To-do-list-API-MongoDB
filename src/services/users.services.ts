@@ -37,7 +37,8 @@ class UsersService {
   }
 
   async updateUser(id: string, data: IUserUpdate) {
-    await User.updateOne({ _id: id, ...data });
+    const updateData = { ...data };
+    await User.updateOne({ _id: id }, { $set: updateData });
     const updatedUser = await User.findById({ _id: id });
 
     const userWithoutPassword = await userResponseSerializer.validate(
