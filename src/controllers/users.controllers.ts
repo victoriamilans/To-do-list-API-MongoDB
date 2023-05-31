@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { usersService } from "../services/users.services";
+import { IUserUpdate } from "../interfaces";
 
 class UsersController {
   async userCreate(req: Request, res: Response): Promise<Response> {
@@ -21,7 +22,7 @@ class UsersController {
   }
 
   async listOneUser(req: Request, res: Response): Promise<Response> {
-    const searchedUser = req.params.id;
+    const searchedUser: string = req.params.id;
     const user = await usersService.listOneUser(searchedUser);
 
     return res.json(user);
@@ -29,7 +30,7 @@ class UsersController {
 
   async userUpdate(req: Request, res: Response): Promise<Response> {
     const userToUpdate: string = req.user.id;
-    const userData = req.body;
+    const userData: IUserUpdate = req.body;
 
     const updatedUser = await usersService.updateUser(userToUpdate, userData);
 
@@ -38,7 +39,7 @@ class UsersController {
 
   async deleteUser(req: Request, res: Response): Promise<Response> {
     const userToDelete: string = req.user.id;
-    const deletedUser = await usersService.deleteUser(userToDelete);
+    await usersService.deleteUser(userToDelete);
 
     return res.sendStatus(204);
   }

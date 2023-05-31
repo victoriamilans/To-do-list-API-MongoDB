@@ -28,3 +28,10 @@ tasksRouter.patch(
   taskMiddlewares.ensureTaskExists,
   tasksController.taskUpdate
 );
+
+tasksRouter.delete(
+  "/:id",
+  userMiddlewares.ensureAuth,
+  taskMiddlewares.ensureTaskExists,
+  tasksController.deleteTask
+);

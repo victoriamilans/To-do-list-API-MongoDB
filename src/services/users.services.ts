@@ -71,7 +71,7 @@ class UsersService {
   }
 
   async deleteUser(id: string): Promise<void> {
-    const userToDelete = await User.findByIdAndDelete({ _id: id });
+    await User.findByIdAndDelete({ _id: id });
   }
 }
 

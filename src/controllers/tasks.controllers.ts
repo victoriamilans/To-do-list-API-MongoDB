@@ -3,7 +3,7 @@ import { ITaskRequest, ITaskUpdate } from "../interfaces";
 import { tasksService } from "../services/tasks.services";
 
 class TasksController {
-  async taskCreate(req: Request, res: Response) {
+  async taskCreate(req: Request, res: Response): Promise<Response> {
     const taskData: ITaskRequest = req.body;
     const user: string = req.user.id;
 
@@ -12,15 +12,15 @@ class TasksController {
     return res.status(201).json(newTask);
   }
 
-  async listAllTasks(req: Request, res: Response) {
-    const user = req.user.id;
+  async listAllTasks(req: Request, res: Response): Promise<Response> {
+    const user: string = req.user.id;
 
     const allTasks = await tasksService.listAllTasks(user);
 
     return res.json(allTasks);
   }
 
-  async listOneTask(req: Request, res: Response, next: any) {
+  async listOneTask(req: Request, res: Response, next: any): Promise<Response> {
     try {
       const user: string = req.user.id;
       const task: string = req.params.id;
@@ -33,7 +33,7 @@ class TasksController {
     }
   }
 
-  async taskUpdate(req: Request, res: Response) {
+  async taskUpdate(req: Request, res: Response): Promise<Response> {
     const userId: string = req.user.id;
     const taskId: string = req.params.id;
     const data: ITaskUpdate = req.body;
@@ -43,7 +43,13 @@ class TasksController {
     return res.json(updatedTask);
   }
 
-  async deleteTask(req: Request, res: Response) {}
+  async deleteTask(req: Request, res: Response): Promise<Response> {
+    const taskId: string = req.params.id;
+
+    await tasksService.deleteTask(taskId);
+
+    return res.sendStatus(204);
+  }
 }
 
 export const tasksController = new TasksController();
