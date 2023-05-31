@@ -1,6 +1,10 @@
 import { Task } from "../entities/tasks.entitie";
+import { AppError } from "../errors";
 import { ITaskRequest, ITaskUpdate } from "../interfaces";
-import { taskResponseSerializer } from "../serializers/tasks.serializers";
+import {
+  taskResponseArraySerializer,
+  taskResponseSerializer,
+} from "../serializers/tasks.serializers";
 
 class TasksService {
   async createTask(
@@ -16,9 +20,29 @@ class TasksService {
     return formattedTask;
   }
 
-  async listOneTask(id: string) {}
+  async listOneTask(userId: any, id: string) {
+    const task = await Task.find({ user: userId, _id: id }).lean();
 
-  async listAllTasks() {}
+    if (!task[0]) {
+      throw new AppError("Task not found", 404);
+    }
+
+    const formattedTask = await taskResponseArraySerializer.validate(task, {
+      stripUnknown: true,
+    });
+
+    return formattedTask;
+  }
+
+  async listAllTasks(user: string) {
+    const task = await Task.find({ user: user }).lean();
+
+    const formattedTask = await taskResponseArraySerializer.validate(task, {
+      stripUnknown: true,
+    });
+
+    return formattedTask;
+  }
 
   async updateTask(id: string, data: ITaskUpdate) {}
 

@@ -1,6 +1,5 @@
 import * as yup from "yup";
 import { ITaskRequest, ITaskResponse } from "../interfaces";
-import { userResponseSerializer } from "./user.serializers";
 
 export const taskRequestSerializer: yup.ObjectSchema<ITaskRequest> = yup
   .object()

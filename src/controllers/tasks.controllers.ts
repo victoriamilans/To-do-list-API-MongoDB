@@ -14,7 +14,18 @@ class TasksController {
 
   async listAllTasks(req: Request, res: Response) {}
 
-  async listOneTask(req: Request, res: Response) {}
+  async listOneTask(req: Request, res: Response, next: any) {
+    try {
+      const user: string = req.user.id;
+      const task: string = req.params.id;
+
+      const searchedTask = await tasksService.listOneTask(user, task);
+
+      return res.json(searchedTask);
+    } catch (error) {
+      next(error);
+    }
+  }
 
   async taskUpdate(req: Request, res: Response) {}
 

@@ -11,3 +11,11 @@ tasksRouter.post(
   userMiddlewares.ensureDataIsValid(taskRequestSerializer),
   tasksController.taskCreate
 );
+
+tasksRouter.get("", userMiddlewares.ensureAuth, tasksController.listAllTasks);
+
+tasksRouter.get(
+  "/:id",
+  userMiddlewares.ensureAuth,
+  tasksController.listOneTask
+);
