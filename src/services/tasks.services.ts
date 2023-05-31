@@ -23,10 +23,6 @@ class TasksService {
   async listOneTask(userId: any, id: string) {
     const task = await Task.find({ user: userId, _id: id }).lean();
 
-    if (!task[0]) {
-      throw new AppError("Task not found", 404);
-    }
-
     const formattedTask = await taskResponseArraySerializer.validate(task, {
       stripUnknown: true,
     });
@@ -44,7 +40,20 @@ class TasksService {
     return formattedTask;
   }
 
-  async updateTask(id: string, data: ITaskUpdate) {}
+  async updateTask(id: string, data: ITaskUpdate, userId: string) {
+    const updateData = { ...data };
+    await Task.updateOne({ _id: id, user: userId }, { $set: updateData });
+    const updatedTask = await Task.findById({ _id: id });
+
+    const userWithoutPassword = await taskResponseSerializer.validate(
+      updatedTask,
+      {
+        stripUnknown: true,
+      }
+    );
+
+    return userWithoutPassword;
+  }
 
   async deleteTask(id: string) {}
 }

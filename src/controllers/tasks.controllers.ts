@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { ITaskRequest } from "../interfaces";
+import { ITaskRequest, ITaskUpdate } from "../interfaces";
 import { tasksService } from "../services/tasks.services";
 
 class TasksController {
@@ -12,7 +12,13 @@ class TasksController {
     return res.status(201).json(newTask);
   }
 
-  async listAllTasks(req: Request, res: Response) {}
+  async listAllTasks(req: Request, res: Response) {
+    const user = req.user.id;
+
+    const allTasks = await tasksService.listAllTasks(user);
+
+    return res.json(allTasks);
+  }
 
   async listOneTask(req: Request, res: Response, next: any) {
     try {
@@ -27,7 +33,15 @@ class TasksController {
     }
   }
 
-  async taskUpdate(req: Request, res: Response) {}
+  async taskUpdate(req: Request, res: Response) {
+    const userId: string = req.user.id;
+    const taskId: string = req.params.id;
+    const data: ITaskUpdate = req.body;
+
+    const updatedTask = await tasksService.updateTask(taskId, data, userId);
+
+    return res.json(updatedTask);
+  }
 
   async deleteTask(req: Request, res: Response) {}
 }
